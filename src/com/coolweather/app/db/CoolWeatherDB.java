@@ -13,10 +13,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class CoolWeatherDB {
+
 	/**
-	 * 数据库名称
+	 * 数据库名
 	 */
 	public static final String DB_NAME = "cool_weather";
+
 	/**
 	 * 数据库版本
 	 */
@@ -36,7 +38,7 @@ public class CoolWeatherDB {
 	}
 
 	/**
-	 * 获取CoolWeatherDB的实例
+	 * 获取CoolWeatherDB的实例。
 	 */
 	public synchronized static CoolWeatherDB getInstance(Context context) {
 		if (coolWeatherDB == null) {
@@ -46,7 +48,7 @@ public class CoolWeatherDB {
 	}
 
 	/**
-	 * 将Province实例存到数据库
+	 * 将Province实例存储到数据库。
 	 */
 	public void saveProvince(Province province) {
 		if (province != null) {
@@ -58,9 +60,9 @@ public class CoolWeatherDB {
 	}
 
 	/**
-	 * 从数据库读取全国省份信息
+	 * 从数据库读取全国所有的省份信息。
 	 */
-	public List<Province> loadProvince() {
+	public List<Province> loadProvinces() {
 		List<Province> list = new ArrayList<Province>();
 		Cursor cursor = db
 				.query("Province", null, null, null, null, null, null);
@@ -79,7 +81,7 @@ public class CoolWeatherDB {
 	}
 
 	/**
-	 * 将City实例存到数据库
+	 * 将City实例存储到数据库。
 	 */
 	public void saveCity(City city) {
 		if (city != null) {
@@ -92,11 +94,11 @@ public class CoolWeatherDB {
 	}
 
 	/**
-	 * 从数据库读取某省下城市信息
+	 * 从数据库读取某省下所有的城市信息。
 	 */
 	public List<City> loadCities(int provinceId) {
 		List<City> list = new ArrayList<City>();
-		Cursor cursor = db.query("City", null, "province_id=?",
+		Cursor cursor = db.query("City", null, "province_id = ?",
 				new String[] { String.valueOf(provinceId) }, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
@@ -106,8 +108,7 @@ public class CoolWeatherDB {
 						.getColumnIndex("city_name")));
 				city.setCityCode(cursor.getString(cursor
 						.getColumnIndex("city_code")));
-				city.setProvinceId(cursor.getInt(cursor
-						.getColumnIndex("province_id")));
+				city.setProvinceId(provinceId);
 				list.add(city);
 			} while (cursor.moveToNext());
 		}
@@ -148,4 +149,5 @@ public class CoolWeatherDB {
 		}
 		return list;
 	}
+
 }
